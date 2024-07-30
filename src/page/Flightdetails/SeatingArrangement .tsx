@@ -38,10 +38,10 @@ const SeatingArrangement: React.FC<SeatingArrangementProps> = ({ data }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2 ">
         {Object.keys(data).map((row) => (
-          <div key={row} className="flex  ">
-            {['left'].map((side) => (
+          <div key={row} className="flex space-x-7 w-2/3 ">
+            {['left', 'center', 'right'].map((side) => (
               <div key={side} className=" flex space-x-2 ">
                 {data[Number(row)]
                   .filter((seat) => seat.side === side)
@@ -57,7 +57,7 @@ const SeatingArrangement: React.FC<SeatingArrangementProps> = ({ data }) => {
                             onClick={() => handleFareSelect(seat)}
                             type="button"
                             key={seat.seat_number}
-                            className={` w-12 h-12 seatmap-seat border-b-8 border border-blue-300 text-blue-300 font-bold py-2 px-3 rounded ${
+                            className={` w-10 h-10 seatmap-seat border-b-8 border border-blue-300 text-blue-300 font-bold  rounded ${
                               seat.occupied
                                 ? 'border-b-8 border border-gray-300 text-gray-400'
                                 : activeSeat === seat.seat_number
@@ -102,8 +102,11 @@ const SeatingArrangement: React.FC<SeatingArrangementProps> = ({ data }) => {
           </div>
         ))}
       </div>
+      <div className='w-1/3'>
+      {activeSeat && <FareDetails classname={'absolute bg-white right-100 top-10 ml-40  inline-block p-4 border rounded w-60'}/>}
+      </div>
 
-      {activeSeat && <FareDetails />}
+      
     </>
   );
 };

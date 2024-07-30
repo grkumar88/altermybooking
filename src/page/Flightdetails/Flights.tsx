@@ -2,11 +2,14 @@ import FlightSeat from './FlightSeat';
 import Arrow from '../../assets/images/arrow.png';
 import IconSelect from '../../assets/images/icon-select.png';
 import { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Meals from './Meals';
+import Baggage from './Baggage';
 
 type Props = {};
 
-const Flights = ({}: Props) => {
-  const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
+const Flights = ({ }: Props) => {
+  const [selectedFlight, setSelectedFlight] = useState<string | null>('outbound');
 
   const handleSeatSelect = (flight: string) => {
     if (selectedFlight === flight) {
@@ -67,9 +70,22 @@ const Flights = ({}: Props) => {
       </div>
 
       {selectedFlight === 'outbound' && (
-        <div className="p-6 bg-white rounded-xl m-5">
-          <FlightSeat />
-        </div>
+        <>
+
+          <div className="p-6 bg-white rounded-xl m-5">
+            <Tabs defaultValue="meal" className="w-full">
+              <TabsList>
+                <TabsTrigger value="seat">Seat</TabsTrigger>
+                <TabsTrigger value="meal">Meal</TabsTrigger>
+                <TabsTrigger value="baggage">Baggage</TabsTrigger>
+              </TabsList>
+              <TabsContent value="seat" className='w-full'><FlightSeat /></TabsContent>
+              <TabsContent value="meal"><Meals /></TabsContent>
+              <TabsContent value="baggage"><Baggage/></TabsContent>
+            </Tabs>
+
+          </div>
+        </>
       )}
 
       <div className="flex justify-between p-6 bg-white rounded-xl m-5">
@@ -121,9 +137,21 @@ const Flights = ({}: Props) => {
       </div>
 
       {selectedFlight === 'inbound' && (
-        <div className="p-6 bg-white rounded-xl m-5">
-          <FlightSeat />
-        </div>
+        <>
+         <div className="p-6 bg-white rounded-xl m-5">
+            <Tabs defaultValue="meal" className="w-full">
+              <TabsList>
+                <TabsTrigger value="seat">Seat</TabsTrigger>
+                <TabsTrigger value="meal">Meal</TabsTrigger>
+                <TabsTrigger value="baggage">Baggage</TabsTrigger>
+              </TabsList>
+              <TabsContent value="seat" className='w-full'><FlightSeat /></TabsContent>
+              <TabsContent value="meal"><Meals /></TabsContent>
+              <TabsContent value="baggage"><Baggage/></TabsContent>
+            </Tabs>
+
+          </div>
+      </>
       )}
     </div>
   );

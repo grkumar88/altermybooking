@@ -1,10 +1,35 @@
-import './App.css';
-import Page from './page/page';
+import Footer from '../src/components/Footer';
+import Header from '../src/components/Header';
+import Flights from '../src/page/Flightdetails/Flights';
+import RightSide from '../src/assets/images/right-side.png';
 
 function App() {
   return (
     <>
-      <Page />
+      <Header />
+      <div className="p-3">
+        <div className="flex justify-between">
+          <div className="self-center">
+            <h1 className="text-lg text-[#061D70]">Seat Selection</h1>
+            <p className="text-sm text-[#9f9f9f]">
+              Why not treat yourself to your ideal seat?
+            </p>
+            <a href="/" className="text-md text-[#2356CF]">
+              Terms & Conditions
+            </a>
+          </div>
+          <div>
+            <img
+              src={RightSide}
+              alt="Flight-Booking"
+              height={120}
+              width={170}
+            />
+          </div>
+        </div>
+      </div>
+      <Flights />
+      <Footer />
     </>
   );
 }
