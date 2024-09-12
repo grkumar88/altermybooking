@@ -22,7 +22,8 @@ const Meals = () => {
           throw new Error('Failed to fetch meals');
         }
         const data = await response.json();
-        setMealsData(data.UpsellMeals); // Use the correct field for meals data
+        console.log('data ==> ', data?.Response[0]);
+        setMealsData(data?.Response[0].UpsellMeals); // Use the correct field for meals data
         setLoading(false);
       } catch (error) {
         setError(error.message || 'Unknown error occurred');
@@ -31,6 +32,8 @@ const Meals = () => {
     };
 
     fetchMeals();
+
+  console.log('meals data', meals);
   }, []);
 
   const handleFilterChange = (type) => {
@@ -68,11 +71,11 @@ const Meals = () => {
     });
   };
 
-  const filteredMeals = meals.filter((meal) => {
+  const filteredMeals =  meals?.length>0 ? meals?.filter((meal) => {
     if (filterType === 'All') return true;
     // Adjust filter conditions based on actual data
     return meal.Description.toLowerCase().includes(filterType.toLowerCase());
-  });
+  }) : [];
 
   if (loading) {
     return <div>Loading meals...</div>;
@@ -83,7 +86,7 @@ const Meals = () => {
   }
 
   return (
-    <div className="flex">
+    <div className="flex"> 
       <div className="space-y-3 w-full">
         {/* Filter */}
         <div className="flex space-x-3 mb-4">
@@ -116,45 +119,46 @@ const Meals = () => {
           </label>
         </div>
 
-        {/* Meals List */}
-        {
-        filteredMeals.map((meal, index) => (
-          <div key={index} className="flex justify-between mb-4">
-            <div className="flex items-center space-x-3">
-              <div className="text-xl">
-                <div>{meal.Name}</div>
-                <div>{meal.Amount.NewAmount} GBP</div>
+        <div className=''>
+          {/* Meals List */}
+          {filteredMeals.map((meal, index) => (
+            <div key={index} className="flex justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <div className="text-xl">
+                  <div>{meal.Name}</div>
+                  {/* <div>{meal.Amount?.NewAmount} GBP</div> */}
+                </div>
+              </div>
+
+              <div className="flex items-center text-xl">
+                {selectedMeal !== index ? (
+                  <button
+                    onClick={() => handleAddClick(index, meal)}
+                    className="py-2 px-10 text-center border rounded-lg text-white bg-green-400 border-green-400"
+                  >
+                    ADD
+                  </button>
+                ) : (
+                  <div className="flex items-center border border-gray-400">
+                    <button
+                      onClick={() => handleQuantityChange(-1)}
+                      className="py-2 px-4 text-white bg-green-400 border-green-400"
+                    >
+                      -
+                    </button>
+                    <span className="py-2 px-4">{quantity}</span>
+                    <button
+                      onClick={() => handleQuantityChange(1)}
+                      className="py-2 px-4 text-white bg-green-400 border-green-400"
+                    >
+                      +
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-
-            <div className="flex items-center text-xl">
-              {selectedMeal !== index ? (
-                <button
-                  onClick={() => handleAddClick(index, meal)}
-                  className="py-2 px-10 text-center border rounded-lg text-white bg-green-400 border-green-400"
-                >
-                  ADD
-                </button>
-              ) : (
-                <div className="flex items-center border border-gray-400">
-                  <button
-                    onClick={() => handleQuantityChange(-1)}
-                    className="py-2 px-4 text-white bg-green-400 border-green-400"
-                  >
-                    -
-                  </button>
-                  <span className="py-2 px-4">{quantity}</span>
-                  <button
-                    onClick={() => handleQuantityChange(1)}
-                    className="py-2 px-4 text-white bg-green-400 border-green-400"
-                  >
-                    +
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
 
       <div className="w-1/4">
