@@ -5,6 +5,7 @@ import {
   seatfare,
   meals,
   baggage,
+  baggagename
 } from '@/redux/flightSlice';
 import { useSelector } from 'react-redux';
 
@@ -14,12 +15,13 @@ const FareDetails = ({ classname }) => {
   const basicFare = useSelector(basicfare) || 0;
   const taxValue = useSelector(tax) || 0;
   const seatFare = useSelector(seatfare) || 0;
-  const mealsValue = useSelector(meals) || 0;
+  const mealsValue = useSelector(meals) || '';
   const baggageValue = useSelector(baggage) || 0;
+  const baggageName = useSelector(baggagename) || ''
 
   console.log('basicFare typeof', typeof basicFare);
 
-  let totalFare = basicFare + taxValue + seatFare + mealsValue + baggageValue;
+  let totalFare = basicFare + taxValue + seatFare + baggageValue;
 
   return (
     <>
@@ -65,13 +67,13 @@ const FareDetails = ({ classname }) => {
                 </span>
                 <span className=" font-semibold ">Base Fare</span>
               </div>
-              <span className="text-base text-gray-700">£ {basicFare}</span>
+              <span className="text-base text-gray-700 text-left">£ {basicFare}</span>
             </div>
 
-            {mealsValue !== 0 && (
+            {mealsValue !== '' && (
               <div className=" flex justify-between items-center my-2 border-b border-gray-200 py-2">
-                <div className=" pointer flex-2 flex items-center">
-                  <span className="mr-2  mt-1">
+                <div className=" pointer flex-2 flex items-center w-3/4 text-left">
+                  {/* <span className="mr-2  mt-1">
                     <span
                       className="iconPlusImg bg-no-repeat"
                       style={{
@@ -81,30 +83,14 @@ const FareDetails = ({ classname }) => {
                         height: '16px',
                       }}
                     ></span>
-                  </span>
-                  <span className=" font-semibold ">Meal</span>
+                  </span> */}
+                  <span className=" font-semibold ">{mealsValue}</span>
                 </div>
-                <span className="text-base text-gray-700">£ {mealsValue}</span>
+                <span className="text-base text-gray-700 w-1/4 text-right ">£ 0</span>
               </div>
             )}
 
-            <div className=" flex justify-between items-center my-2 border-b border-gray-200 py-2">
-              <div className=" hrtlCenter  flex-2 flex items-center">
-                <span className="mr-2 mt-1">
-                  <span
-                    className="iconPlusImg bg-no-repeat"
-                    style={{
-                      backgroundImage:
-                        'url(//jsak.mmtcdn.com/flights/assets/media/ic_expand.68dc8068.png)',
-                      width: '16px',
-                      height: '16px',
-                    }}
-                  ></span>
-                </span>
-                <span className=" font-semibold">Taxes and Surcharges</span>
-              </div>
-              <span className="text-base text-gray-700">£ {taxValue}</span>
-            </div>
+            
 
             <div className=" flex justify-between items-center my-2 border-b border-gray-200 py-2">
               <div className="  pointer flex-2 flex items-center">
@@ -124,6 +110,7 @@ const FareDetails = ({ classname }) => {
               </div>
               <span className="text-base text-gray-700">£ {seatFare}</span>
             </div>
+            {baggageName && 
             <div className=" flex justify-between items-center my-2 border-b border-gray-200 py-2">
               <div className="  pointer flex-2 flex items-center">
                 <span className="mr-2 mt-1">
@@ -138,9 +125,29 @@ const FareDetails = ({ classname }) => {
                   ></span>
                 </span>
 
-                <span className=" font-semibold">Baggage Fare</span>
+                {/* <span className=" font-semibold">Baggage Fare</span> */}
+                <span className=" font-semibold">{baggageName}</span>
               </div>
               <span className="text-base text-gray-700">£ {baggageValue}</span>
+            </div>
+            }
+
+<div className=" flex justify-between items-center my-2 border-b border-gray-200 py-2">
+              <div className=" hrtlCenter  flex-2 flex items-center text-left">
+                {/* <span className="mr-2 mt-1"> */}
+                  {/* <span
+                    className="iconPlusImg bg-no-repeat"
+                    style={{
+                      backgroundImage:
+                        'url(//jsak.mmtcdn.com/flights/assets/media/ic_expand.68dc8068.png)',
+                      width: '16px',
+                      height: '16px',
+                    }}
+                  ></span>
+                </span> */}
+                <span className=" font-semibold">Taxes and Surcharges</span>
+              </div>
+              <span className="text-base text-gray-700">£ {taxValue}</span>
             </div>
 
             <div className=" mt-4">

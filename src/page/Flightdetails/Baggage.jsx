@@ -1,22 +1,22 @@
 import { useDispatch } from 'react-redux';
 import FareDetails from './FareDetails'; // Adjust the import path as needed
 import { setBaggage } from '@/redux/flightSlice';
+import { useState, useEffect } from 'react';
 
 // BaggageCard Component
 const BaggageCard = ({ title, description, weight, price }) => {
   const dispatch = useDispatch();
-
   return (
     <div className="w-full flex flex-col justify-between max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
       <div className="p-4">
         <h2 className="text-xl font-bold mb-2">{title}</h2>
         <p className="text-gray-700 mb-2">{description}</p>
         <p className="text-gray-500 mb-4">Weight: {weight}</p>
-        <div className="text-xl font-bold text-green-500">{price}</div>
+        <div className="text-xl font-bold text-red-500">£{price}</div>
       </div>
       <button
         onClick={() => {
-          dispatch(setBaggage({ baggage: price }));
+          dispatch(setBaggage({ baggage: price, baggageName: title }));
         }}
         className="border  bg-green-700 text-white uppercase font-bold rounded-xl px-5 py-3 m-4"
       >
@@ -28,6 +28,31 @@ const BaggageCard = ({ title, description, weight, price }) => {
 
 // BaggageGrid Component
 const BaggageGrid = () => {
+  const [ baggageList, setBaggageList] = useState(null)
+  useEffect(() => {
+    const fetchBaggages = async () => {
+      try {
+        const response = await fetch(
+          'https://d25ac222-420a-4dd3-9688-bfba567d7a16.mock.pstmn.io/api/ancillary/MealsBaggages'
+        );
+        if (!response.ok) {
+          throw new Error('Failed to fetch baggage');
+        }
+        const data = await response.json();
+        console.log('UpsellBaggages ==> ', data?.Response[0].UpsellBaggages);
+        setBaggageList(data?.Response[0].UpsellBaggages); // Use the correct field for baggage data
+        setLoading(false);
+      } catch (error) {
+        setError(error.message || 'Unknown error occurred');
+        setLoading(false);
+      }
+    };
+
+    fetchBaggages();
+
+  console.log('Baggage data', baggageList);
+  }, []);
+
   const baggageOptions = [
     {
       title: 'Checked-in Baggage',
@@ -55,7 +80,7 @@ const BaggageGrid = () => {
   return (
     <div className="flex">
       <div className="w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-        {baggageOptions.map((baggage, index) => (
+        {/* {baggageOptions.map((baggage, index) => (
           <BaggageCard
             key={index}
             title={baggage.title}
@@ -63,7 +88,18 @@ const BaggageGrid = () => {
             weight={baggage.weight}
             price={baggage.price}
           />
+        ))} */}
+        {baggageList?.map((baggage, index) => (
+          <BaggageCard
+            key={index}
+            title={baggage.Name}
+            description={baggage.Description}
+            // weight={baggage.weight}
+            weight={0}
+            price={baggage.Amount.TotalAmount}
+          />
         ))}
+        
       </div>
 
       <div className="w-1/4">

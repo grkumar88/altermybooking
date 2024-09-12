@@ -3,8 +3,11 @@ import FlightBg from '../../assets/images/flight_bgg.png';
 import Xlseatmap from '../../assets/images/XLseatmap.png';
 import Nonrecliner from '../../assets/images/nonrecliner.png';
 import Exitrowseat from '../../assets/images/emergencyexit.png';
+import { useEffect, useState } from 'react';
+import SeatMap from './SeatMap';
+import FareDetails from './FareDetails';
 
-const FlightSeat = ({}) => {
+const FlightSeat = ({seatData}) => {
   const seating_arrangement = {
     1: [
       {
@@ -748,63 +751,11 @@ const FlightSeat = ({}) => {
     ],
   };
 
+  console.log('seatData ==> ', seatData);
+
   return (
-    <>
-      <div className="relative">
-        <div className="bg-white border border-gray-300 rounded-xl p-4 ml-8 absolute top-60 w-44">
-          <ul className="space-y-4">
-            <li className="flex items-center gap-4 mb-2">
-              <span
-                className="w-4 h-4"
-                style={{ backgroundColor: 'rgb(80, 227, 194)' }}
-              ></span>
-              <span className="text-xs">Free</span>
-            </li>
-            <li className="flex items-center gap-4 mb-2">
-              <span
-                className="w-4 h-4"
-                style={{ backgroundColor: 'rgb(186, 218, 255)' }}
-              ></span>
-              <span className="text-xs">£ 1000-2000</span>
-            </li>
-            <li className="flex items-center gap-4 mb-2">
-              <span
-                className="w-4 h-4"
-                style={{ backgroundColor: 'rgb(201, 186, 255)' }}
-              ></span>
-              <span className="text-xs">£ 1300-2400</span>
-            </li>
-            <li className="flex items-center gap-4 mb-2">
-              <span
-                className="w-4 h-4 bg-no-repeat bg-cover"
-                style={{
-                  backgroundImage: `url(${Exitrowseat})`,
-                }}
-              ></span>
-              <span className="text-xs">Exit Row Seats</span>
-            </li>
-            <li className="flex items-center gap-4 mb-2">
-              <span
-                className="w-4 h-4 bg-no-repeat bg-cover"
-                style={{
-                  backgroundImage: `url(${Nonrecliner})`,
-                }}
-              ></span>
-              <span className="text-xs">Non Reclining</span>
-            </li>
-            <li className="flex items-center gap-4">
-              <span
-                className="w-4 h-4 bg-no-repeat bg-cover"
-                style={{
-                  backgroundImage: `url(${Xlseatmap})`,
-                }}
-              ></span>
-              <span className="text-xs">Extra Legroom</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className=" flex self-center justify-center bg-[#e9eeff]">
+    <div className='flex'>
+      <div className=" flex self-center justify-center bg-[#e9eeff] w-3/4">
         <div className="bg-[#e9eeff] p-5">
           <div
             className="relative w-full mb-5"
@@ -812,12 +763,22 @@ const FlightSeat = ({}) => {
           >
             <img src={FlightBg} alt="Background Image" className="rounded-lg" />
             <div className="absolute top-40 left-0 w-full flex items-center justify-center mt-10">
-              <SeatingArrangement data={seating_arrangement} />
+              {/* <SeatingArrangement data={seating_arrangement} /> */}
+              {/* <SeatingArrangement data={seatData} /> */}
+              <SeatMap data={seatData} />
             </div>
           </div>
         </div>
       </div>
-    </>
+
+      <div className="w-1/4">
+        <FareDetails
+          classname={
+            'bg-white ml-10 right-100 inline-block p-4 border rounded w-80'
+          }
+        />
+      </div>
+    </div>
   );
 };
 

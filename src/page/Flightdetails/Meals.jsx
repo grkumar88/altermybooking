@@ -41,19 +41,22 @@ const Meals = () => {
   };
 
   const handleAddClick = (mealIndex, meal) => {
+    console.log('meals == > ', meal);
     if (selectedMeal !== null && selectedMeal !== mealIndex) {
       alert('You can select only one product at a time.');
       return;
     }
 
     if (selectedMeal === mealIndex) {
+      console.log('IF');
       setSelectedMeal(null);
       setQuantity(1);
       dispatch(setMeals({ meal: null })); // Clear the selection
     } else {
+      console.log('else');
       setSelectedMeal(mealIndex);
       setQuantity(1);
-      dispatch(setMeals({ meal: meal.Amount.NewAmount })); // Set the selected meal amount
+      dispatch(setMeals({ meal: meal })); // Set the selected meal amount
     }
   };
 
@@ -89,7 +92,7 @@ const Meals = () => {
     <div className="flex"> 
       <div className="space-y-3 w-full">
         {/* Filter */}
-        <div className="flex space-x-3 mb-4">
+        {/* <div className="flex space-x-3 mb-4">
           <label>
             <input
               type="radio"
@@ -117,24 +120,27 @@ const Meals = () => {
             />
             Non Vegetarian
           </label>
-        </div>
+        </div> */}
 
-        <div className=''>
+        <div className='grid grid-cols-4 gap-4'>
           {/* Meals List */}
           {filteredMeals.map((meal, index) => (
-            <div key={index} className="flex justify-between mb-4">
+            <div key={index} className="flex flex-col justify-between mb-4 border border-gray-500">
               <div className="flex items-center space-x-3">
                 <div className="text-xl">
-                  <div>{meal.Name}</div>
+                  <div className='w-full'>
+                    <img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"  alt="" />
+                  </div>
+                  <div className='p-2 text-sm font-medium'>{meal.Name}</div>
                   {/* <div>{meal.Amount?.NewAmount} GBP</div> */}
                 </div>
               </div>
 
-              <div className="flex items-center text-xl">
+              <div className="flex items-center justify-center text-sm p-2">
                 {selectedMeal !== index ? (
                   <button
                     onClick={() => handleAddClick(index, meal)}
-                    className="py-2 px-10 text-center border rounded-lg text-white bg-green-400 border-green-400"
+                    className="py-2 px-10 text-center border rounded-lg text-white bg-green-700"
                   >
                     ADD
                   </button>
@@ -142,14 +148,14 @@ const Meals = () => {
                   <div className="flex items-center border border-gray-400">
                     <button
                       onClick={() => handleQuantityChange(-1)}
-                      className="py-2 px-4 text-white bg-green-400 border-green-400"
+                      className="py-2 px-4 text-white bg-green-700"
                     >
                       -
                     </button>
                     <span className="py-2 px-4">{quantity}</span>
                     <button
-                      onClick={() => handleQuantityChange(1)}
-                      className="py-2 px-4 text-white bg-green-400 border-green-400"
+                      // onClick={() => handleQuantityChange(1)}
+                      className="py-2 px-4 text-white bg-green-700"
                     >
                       +
                     </button>
