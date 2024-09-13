@@ -4,10 +4,14 @@ import { setBaggage } from '@/redux/flightSlice';
 import { useState, useEffect } from 'react';
 
 // BaggageCard Component
-const BaggageCard = ({ title, description, weight, price }) => {
+const BaggageCard = ({ title, description, weight, price, selected, onSelect }) => {
   const dispatch = useDispatch();
   return (
-    <div className="w-full flex flex-col justify-between max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+    <div
+      className={`w-full flex flex-col justify-between max-w-sm mx-auto shadow-lg rounded-lg overflow-hidden border border-gray-200 ${
+        selected ? 'bg-green-100' : 'bg-white'
+      }`} // Change background color when selected
+    >
       <div className="p-4">
         <h2 className="text-xl font-bold mb-2">{title}</h2>
         <p className="text-gray-700 mb-2">{description}</p>
@@ -17,8 +21,9 @@ const BaggageCard = ({ title, description, weight, price }) => {
       <button
         onClick={() => {
           dispatch(setBaggage({ baggage: price, baggageName: title }));
+          onSelect(); // Call the onSelect function passed as a prop
         }}
-        className="border  bg-green-700 text-white uppercase font-bold rounded-xl px-5 py-3 m-4"
+        className="border bg-green-700 text-white uppercase font-bold rounded-xl px-5 py-3 m-4"
       >
         Select
       </button>
@@ -28,7 +33,9 @@ const BaggageCard = ({ title, description, weight, price }) => {
 
 // BaggageGrid Component
 const BaggageGrid = () => {
-  const [ baggageList, setBaggageList] = useState(null)
+  const [baggageList, setBaggageList] = useState(null);
+  const [selectedBaggage, setSelectedBaggage] = useState(null); // Track selected baggage
+
   useEffect(() => {
     const fetchBaggages = async () => {
       try {
@@ -41,65 +48,28 @@ const BaggageGrid = () => {
         const data = await response.json();
         console.log('UpsellBaggages ==> ', data?.Response[0].UpsellBaggages);
         setBaggageList(data?.Response[0].UpsellBaggages); // Use the correct field for baggage data
-        setLoading(false);
       } catch (error) {
-        setError(error.message || 'Unknown error occurred');
-        setLoading(false);
+        console.error(error.message || 'Unknown error occurred');
       }
     };
 
     fetchBaggages();
-
-  console.log('Baggage data', baggageList);
   }, []);
-
-  const baggageOptions = [
-    {
-      title: 'Checked-in Baggage',
-      description: 'Standard checked-in baggage allowance.',
-      weight: 'Up to 15 kg',
-      price: 20,
-      selected: false,
-    },
-    {
-      title: 'Additional Checked-in Baggage',
-      description: 'Additional baggage allowance for your trip.',
-      weight: 'Up to 10 kg extra',
-      price: 50,
-      selected: false,
-    },
-    {
-      title: 'Carry More On-board',
-      description: 'Carry more items with you on-board.',
-      weight: 'Up to 7 kg',
-      price: 70,
-      selected: false,
-    },
-  ];
 
   return (
     <div className="flex">
       <div className="w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-        {/* {baggageOptions.map((baggage, index) => (
-          <BaggageCard
-            key={index}
-            title={baggage.title}
-            description={baggage.description}
-            weight={baggage.weight}
-            price={baggage.price}
-          />
-        ))} */}
         {baggageList?.map((baggage, index) => (
           <BaggageCard
             key={index}
             title={baggage.Name}
             description={baggage.Description}
-            // weight={baggage.weight}
-            weight={0}
+            weight={0} // Update if weight is available
             price={baggage.Amount.TotalAmount}
+            selected={selectedBaggage === index} // Check if this baggage is selected
+            onSelect={() => setSelectedBaggage(index)} // Update the selected baggage index
           />
         ))}
-        
       </div>
 
       <div className="w-1/4">
