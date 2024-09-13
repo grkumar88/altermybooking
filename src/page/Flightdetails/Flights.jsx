@@ -2,24 +2,19 @@ import FlightSeat from './FlightSeat';
 import Arrow from '../../assets/images/arrow.png';
 import IconSelect from '../../assets/images/icon-select.png';
 import { useEffect, useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Meals from './Meals';
-import Baggage from './Baggage';
+
+import { reset, selectedtab } from '@/redux/flightSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import FlightTabs from './FlightTabs';
 
 const Flights = ({}) => {
+  const dispatch = useDispatch();
+  const selectedTab = useSelector(selectedtab);
+
   const [selectedFlight, setSelectedFlight] = useState('outbound');
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const handleSeatSelect = (flight) => {
-    if (selectedFlight === flight) {
-      setSelectedFlight(null); // Deselect if the same flight is clicked again
-    } else {
-      setSelectedFlight(flight);
-    }
-  };
-  
   const [seatList,setSeatList] = useState(null)
 
   useEffect(() => {
@@ -41,19 +36,16 @@ const Flights = ({}) => {
               "Inbound": data?.Response.SeatMapsResponses.Inbound
           }
       ]
-        const updatedData = newResponse?.map(item => {
-          console.log('item', item);
-          
-          const key = Object.keys(item)[0]; // "Inbound" or "Outbound"
-          const updatedItem = {
-            ...item,
-            isSeatOpen: false
-          };
-          console.log('updatedItem', updatedItem);
-          
-          return updatedItem;
-        });
-        console.log('updatedData', updatedData);
+      const updatedData = newResponse?.map(item => {
+        
+        const key = Object.keys(item)[0]; // "Inbound" or "Outbound"
+        const updatedItem = {
+          ...item,
+          isSeatOpen: false
+        };
+        
+        return updatedItem;
+      });
         
         setSeatList(updatedData); // Use the correct field for baggage data
         setLoading(false);
@@ -62,9 +54,7 @@ const Flights = ({}) => {
         setLoading(false);
       }
     };
-
     fetchSeats();
-
   }, []);
 
   const flightData = data?.Response?.SeatMapsResponses;
@@ -77,18 +67,15 @@ const Flights = ({}) => {
       }));
       return newData;
     });
+    dispatch(reset());
   };
 
   return (
       <div>
-        {/* <div>{JSON.stringify(seatList, null, 2)}</div> */}
         {seatList?.map((list, index) => {
           const flightType = Object.keys(list)[0];
           const flightSegment = list[flightType][0].FlightSegment
           const flightRows = list[flightType][0].SeatRows
-          console.log('flightType', flightType);
-          console.log('flightSegment', flightSegment);
-          console.log('flightRows', flightRows?.Rows);
           
           return (
             <> 
@@ -147,25 +134,7 @@ const Flights = ({}) => {
               </div>
               
         {list.isSeatOpen && (
-          
-              <div className="p-6 bg-white rounded-xl m-5">
-                <Tabs defaultValue="seat" className="w-full">
-                  <TabsList>
-                    <TabsTrigger value="seat">Seat</TabsTrigger>
-                    <TabsTrigger value="meal">Meal</TabsTrigger>
-                    <TabsTrigger value="baggage">Baggage</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="seat"  className="w-full" >
-                    <FlightSeat seatData={flightRows?.Rows} />
-                  </TabsContent>
-                  <TabsContent value="meal">
-                    <Meals />
-                  </TabsContent>
-                  <TabsContent value="baggage">
-                    <Baggage />
-                  </TabsContent>
-                </Tabs>
-              </div>
+              <FlightTabs flightRowsData={flightRows?.Rows} />
         )}
             </>
            

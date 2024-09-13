@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
 import FareDetails from './FareDetails';
-import { useDispatch } from 'react-redux';
-import { setMeals } from '@/redux/flightSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMeals, setSelectedTab, meals } from '@/redux/flightSlice';
 
 const Meals = () => {
   const dispatch = useDispatch();
-  const [meals, setMealsData] = useState([]);
+  const [mealsData, setMealsData] = useState([]);
   const [filterType, setFilterType] = useState('All');
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const mealsValue = useSelector(meals)
+  console.log('mealsValue', mealsValue);
+  
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -22,7 +26,6 @@ const Meals = () => {
           throw new Error('Failed to fetch meals');
         }
         const data = await response.json();
-        console.log('data ==> ', data?.Response[0]);
         setMealsData(data?.Response[0].UpsellMeals); // Use the correct field for meals data
         setLoading(false);
       } catch (error) {
@@ -33,15 +36,16 @@ const Meals = () => {
 
     fetchMeals();
 
-  console.log('meals data', meals);
   }, []);
+  console.log('meals data', JSON.stringify(mealsData));
+
 
   const handleFilterChange = (type) => {
     setFilterType(type);
   };
 
   const handleAddClick = (mealIndex, meal) => {
-    console.log('meals == > ', meal);
+    console.log('meals == > ', mealsData);
     if (selectedMeal !== null && selectedMeal !== mealIndex) {
       alert('You can select only one product at a time.');
       return;
@@ -57,6 +61,9 @@ const Meals = () => {
       setSelectedMeal(mealIndex);
       setQuantity(1);
       dispatch(setMeals({ meal: meal })); // Set the selected meal amount
+      setTimeout(() => {
+        dispatch(setSelectedTab("bag"));
+      }, 1000);
     }
   };
 
@@ -74,7 +81,7 @@ const Meals = () => {
     });
   };
 
-  const filteredMeals =  meals?.length>0 ? meals?.filter((meal) => {
+  const filteredMeals =  mealsData?.length>0 ? mealsData?.filter((meal) => {
     if (filterType === 'All') return true;
     // Adjust filter conditions based on actual data
     return meal.Description.toLowerCase().includes(filterType.toLowerCase());
@@ -135,9 +142,8 @@ const Meals = () => {
                   {/* <div>{meal.Amount?.NewAmount} GBP</div> */}
                 </div>
               </div>
-
               <div className="flex items-center justify-center text-sm p-2">
-                {selectedMeal !== index ? (
+                {selectedMeal !== index  ? (
                   <button
                     onClick={() => handleAddClick(index, meal)}
                     className="py-2 px-10 text-center border rounded-lg text-white bg-green-700"

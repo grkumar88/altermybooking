@@ -35,8 +35,8 @@ const navigation = {
 
 const Footer = () => {
   return (
-    <div className="flex justify-between bg-[#05203c] text-white p-1">
-      <div className="flex space-x-3 self-center py-4">
+    <div className="flex justify-between bg-[#05203c] text-white p-3">
+      <div className="flex space-x-3 self-center ">
         {navigation.social.map((item) => (
           <a
             key={item.name}
@@ -49,10 +49,8 @@ const Footer = () => {
         ))}
       </div>
       <div className="font-extralight self-center">
-        <span>
-          Alter My Booking .com
-          <br />
-          copyrights © 2024 All Rights Reserved.
+        <span className='text-sm'>
+          Alter My Booking com Copyrights © 2024 All Rights Reserved.
         </span>
       </div>
     </div>

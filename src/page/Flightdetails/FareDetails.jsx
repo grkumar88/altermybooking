@@ -5,12 +5,15 @@ import {
   seatfare,
   meals,
   baggage,
-  baggagename
+  baggagename,
+  selectedtab,
+  setSelectedTab
 } from '@/redux/flightSlice';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // export default function FareDetails({classname}) {
 const FareDetails = ({ classname }) => {
+  const dispatch = useDispatch();
   const selectedSeat = useSelector(selectedseat);
   const basicFare = useSelector(basicfare) || 0;
   const taxValue = useSelector(tax) || 0;
@@ -18,10 +21,16 @@ const FareDetails = ({ classname }) => {
   const mealsValue = useSelector(meals) || '';
   const baggageValue = useSelector(baggage) || 0;
   const baggageName = useSelector(baggagename) || ''
+  const selectedTab = useSelector(selectedtab) 
 
   console.log('basicFare typeof', typeof basicFare);
 
   let totalFare = basicFare + taxValue + seatFare + baggageValue;
+
+  const handleSkip = () => {
+    dispatch(setSelectedTab("bag"));
+    console.log('handleSkip');
+  };
 
   return (
     <>
@@ -161,15 +170,26 @@ const FareDetails = ({ classname }) => {
               </p>
             </div>
 
-            <div className=" mt-4">
-              <p className=" flex justify-end">
+            <div className=" mt-4 flex justify-between">
+              {/* <p className=" flex justify-end"> */}
+              {selectedTab === 'meal'  &&
                 <button
                   type="submit"
+                  onClick={handleSkip}
+                  disabled = {selectedTab === 'seat'}
+                  className="text-md font-semibold text-black border border-gray-500 px-3 py-0.5 rounded-xl"
+                >
+                  Skip
+                </button>
+              }
+                <button
+                  type="submit"
+                  disabled = {selectedSeat}
                   className="text-md font-semibold text-white bg-green-600 px-3 py-0.5 rounded-xl"
                 >
                   Confirm
                 </button>
-              </p>
+              {/* </p> */}
             </div>
           </section>
         </div>
