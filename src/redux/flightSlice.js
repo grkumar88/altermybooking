@@ -10,7 +10,8 @@ const flightSlice = createSlice({
     meals: null,
     baggage: 0,
     baggageName: null,
-    selectedTab: "seat",
+    selectedTab: 'seat',
+    confirmation: false,
   },
   reducers: {
     reset: (state) => {
@@ -21,12 +22,12 @@ const flightSlice = createSlice({
       state.meals = null;
       state.baggage = 0;
       state.baggageName = null;
-      state.selectedTab = "seat"
+      state.selectedTab = 'seat';
     },
     setSeat: (state, action) => {
       const { Column, SeatCode, SeatPrice } = action.payload.seat;
       console.log('seat_number', action.payload.seat);
-      
+
       state.selectedSeat = `${Column}${SeatCode}`;
       state.basicfare = SeatPrice.BaseAmount;
       state.tax = SeatPrice.TaxAmount;
@@ -40,12 +41,22 @@ const flightSlice = createSlice({
       state.baggageName = action.payload.baggageName;
     },
     setSelectedTab: (state, action) => {
-      state.selectedTab = action.payload
-    }
+      state.selectedTab = action.payload;
+    },
+    setConfirmation: (state, action) => {
+      state.confirmation = action.payload;
+    },
   },
 });
 
-export const { setSeat, setMeals, setBaggage, setSelectedTab, reset } = flightSlice.actions;
+export const {
+  setSeat,
+  setMeals,
+  setBaggage,
+  setSelectedTab,
+  reset,
+  setConfirmation,
+} = flightSlice.actions;
 export default flightSlice.reducer;
 
 export const selectedseat = (state) => state.flight.selectedSeat;
@@ -54,5 +65,6 @@ export const tax = (state) => state.flight.tax;
 export const seatfare = (state) => state.flight.seatfare;
 export const meals = (state) => state.flight.meals;
 export const baggage = (state) => state.flight.baggage;
-export const baggagename = (state) => state.flight.baggageName
-export const selectedtab = (state) => state.flight.selectedTab
+export const baggagename = (state) => state.flight.baggageName;
+export const selectedtab = (state) => state.flight.selectedTab;
+export const confirmationStore = (state) => state.flight.confirmation;

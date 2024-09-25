@@ -1,14 +1,19 @@
-import React from "react";
-import seatImage from "../../assets/images/seat.png";
-import { useDispatch, useSelector } from "react-redux";
-import { setSeat, setSelectedTab } from "@/redux/flightSlice";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import React from 'react';
+import seatImage from '../../assets/images/seat.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSeat, setSelectedTab } from '@/redux/flightSlice';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 // Seat Component to display seat characteristics and price
 const Seat = ({ seat }) => {
   const dispatch = useDispatch();
   const selectedSeat = useSelector((state) => state.flight.selectedSeat);
-  
+
   const {
     Column,
     SeatCode,
@@ -20,12 +25,14 @@ const Seat = ({ seat }) => {
   const handleFareSelect = (seat) => {
     dispatch(setSeat({ seat }));
     setTimeout(() => {
-      dispatch(setSelectedTab("meal"));
+      dispatch(setSelectedTab('meal'));
     }, 1000);
   };
 
   return (
-    <div className={`seat ${Availability === "F" ? "available" : "unavailable"}`}>
+    <div
+      className={`seat ${Availability === 'F' ? 'available' : 'unavailable'}`}
+    >
       <TooltipProvider key={`${Column}${SeatCode}`} delayDuration={300}>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -33,19 +40,20 @@ const Seat = ({ seat }) => {
               onClick={() => handleFareSelect(seat)}
               type="button"
               key={`${Column}${SeatCode}`}
-              className={`w-7 h-7 m-1 seatmap-seat text-xs font-bold rounded ${
+              className={`w-7 h-5 md:h-7 m-1 seatmap-seat text-xs font-bold rounded ${
                 seat.occupied
-                  ? "bg-red-300 border border-b-4 border-b-red-600 text-white"
+                  ? 'bg-red-300 border border-b-4 border-b-red-600 text-white'
                   : selectedSeat === `${Column}${SeatCode}`
-                  ? "bg-green-300 border border-b-4 border-b-green-600 text-black"
-                  : Availability !== "F"
-                  ? "border-b-8 border border-gray-300 text-gray-400"
-                  : "bg-blue-300 border border-b-4 border-b-[#0c32ff]"
+                  ? 'bg-green-300 border border-b-4 border-b-green-600 text-black'
+                  : Availability !== 'F'
+                  ? 'border-b-8 border border-gray-300 text-gray-400'
+                  : 'bg-blue-300 border border-b-4 border-b-[#0c32ff]'
               }`}
               style={{
-                backgroundImage: Availability !== "F" ? `url(${seatImage})` : "none",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
+                backgroundImage:
+                  Availability !== 'F' ? `url(${seatImage})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
               }}
               disabled={seat.occupied}
             >
@@ -55,10 +63,17 @@ const Seat = ({ seat }) => {
           </TooltipTrigger>
           <TooltipContent className="border border-gray-500">
             <p>
-              Seat Number <span className="font-bold">{Column}{SeatCode}</span>
+              Seat Number{' '}
+              <span className="font-bold">
+                {Column}
+                {SeatCode}
+              </span>
             </p>
             <p>
-              Price: <span className="font-bold">{CurrencyCode} {TotalAmount}</span>
+              Price:{' '}
+              <span className="font-bold">
+                {CurrencyCode} {TotalAmount}
+              </span>
             </p>
           </TooltipContent>
         </Tooltip>
