@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import SeatMap from './SeatMap';
 import FareDetails from './FareDetails';
 
-const FlightSeat = ({seatData}) => {
+const FlightSeat = ({ seatData }) => {
   const seating_arrangement = {
     1: [
       {
@@ -754,15 +754,15 @@ const FlightSeat = ({seatData}) => {
   console.log('seatData ==> ', seatData);
 
   return (
-    <div className='flex'>
-      <div className=" flex self-center justify-center bg-[#e9eeff] w-3/4">
+    <div className="flex">
+      <div className=" flex self-center justify-center bg-[#e9eeff] md:w-3/4">
         <div className="bg-[#e9eeff] p-5">
           <div
             className="relative w-full mb-5"
-            style={{ paddingBottom: '43.7%' }}
+            // style={{ paddingBottom: '43.7%' }}
           >
             <img src={FlightBg} alt="Background Image" className="rounded-lg" />
-            <div className="absolute top-40 left-0 w-full flex items-center justify-center mt-10">
+            <div className="absolute top-40 left-0 w-full flex items-center justify-center ">
               {/* <SeatingArrangement data={seating_arrangement} /> */}
               {/* <SeatingArrangement data={seatData} /> */}
               <SeatMap data={seatData} />
@@ -771,7 +771,7 @@ const FlightSeat = ({seatData}) => {
         </div>
       </div>
 
-      <div className="w-1/4">
+      <div className="w-1/4 hidden md:block">
         <FareDetails
           classname={
             'bg-white ml-10 right-100 inline-block p-4 border rounded w-80'

@@ -12,9 +12,8 @@ const Meals = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const mealsValue = useSelector(meals)
+  const mealsValue = useSelector(meals);
   console.log('mealsValue', mealsValue);
-  
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -35,10 +34,8 @@ const Meals = () => {
     };
 
     fetchMeals();
-
   }, []);
   console.log('meals data', JSON.stringify(mealsData));
-
 
   const handleFilterChange = (type) => {
     setFilterType(type);
@@ -62,7 +59,7 @@ const Meals = () => {
       setQuantity(1);
       dispatch(setMeals({ meal: meal })); // Set the selected meal amount
       setTimeout(() => {
-        dispatch(setSelectedTab("bag"));
+        dispatch(setSelectedTab('bag'));
       }, 1000);
     }
   };
@@ -81,11 +78,16 @@ const Meals = () => {
     });
   };
 
-  const filteredMeals =  mealsData?.length>0 ? mealsData?.filter((meal) => {
-    if (filterType === 'All') return true;
-    // Adjust filter conditions based on actual data
-    return meal.Description.toLowerCase().includes(filterType.toLowerCase());
-  }) : [];
+  const filteredMeals =
+    mealsData?.length > 0
+      ? mealsData?.filter((meal) => {
+          if (filterType === 'All') return true;
+          // Adjust filter conditions based on actual data
+          return meal.Description.toLowerCase().includes(
+            filterType.toLowerCase()
+          );
+        })
+      : [];
 
   if (loading) {
     return <div>Loading meals...</div>;
@@ -96,8 +98,8 @@ const Meals = () => {
   }
 
   return (
-    <div className="flex"> 
-      <div className="space-y-3 w-full">
+    <div className="md:flex">
+      <div className="space-y-3 md:w-3/4">
         {/* Filter */}
         {/* <div className="flex space-x-3 mb-4">
           <label>
@@ -129,21 +131,27 @@ const Meals = () => {
           </label>
         </div> */}
 
-        <div className='grid grid-cols-4 gap-4'>
+        <div className="md:grid md:grid-cols-3 md:gap-4 ">
           {/* Meals List */}
           {filteredMeals.map((meal, index) => (
-            <div key={index} className="flex flex-col justify-between mb-4 border border-gray-500">
+            <div
+              key={index}
+              className="flex flex-col justify-between mb-4 border border-gray-500"
+            >
               <div className="flex items-center space-x-3">
                 <div className="text-xl">
-                  <div className='w-full'>
-                    <img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"  alt="" />
+                  <div className="w-full">
+                    <img
+                      src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                      alt=""
+                    />
                   </div>
-                  <div className='p-2 text-sm font-medium'>{meal.Name}</div>
+                  <div className="p-2 text-sm font-medium">{meal.Name}</div>
                   {/* <div>{meal.Amount?.NewAmount} GBP</div> */}
                 </div>
               </div>
               <div className="flex items-center justify-center text-sm p-2">
-                {selectedMeal !== index  ? (
+                {selectedMeal !== index ? (
                   <button
                     onClick={() => handleAddClick(index, meal)}
                     className="py-2 px-10 text-center border rounded-lg text-white bg-green-700"
@@ -173,13 +181,11 @@ const Meals = () => {
         </div>
       </div>
 
-      <div className="w-1/4">
-        <FareDetails
-          classname="bg-white ml-10 right-100 inline-block p-4 border rounded w-80"
-        />
+      <div className="w-1/4 hidden md:block">
+        <FareDetails classname="bg-white ml-10 right-100 inline-block p-4 border rounded w-80" />
       </div>
     </div>
-  )
+  );
 };
 
 export default Meals;

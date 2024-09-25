@@ -39,20 +39,17 @@ const SeatingArrangement = ({ data }) => {
   // console.log('seat data', seatList);
   // }, []);
 
-  const seating_arrangement = {
-    
-  };
+  const seating_arrangement = {};
 
   const [inbond, setInbond] = useState({
     // Initialize with your inbound data
   });
 
-  const [selectRow, setSelectRow] = useState(seating_arrangement.Inbound?.[0]?.SeatRows?.Rows || []);
+  const [selectRow, setSelectRow] = useState(
+    seating_arrangement.Inbound?.[0]?.SeatRows?.Rows || []
+  );
 
-
-
-
-const [activeSeat, setActiveSeat] = useState(null);
+  const [activeSeat, setActiveSeat] = useState(null);
 
   const handleFareSelect = (seat) => {
     setActiveSeat(seat.seat_number === activeSeat ? null : seat.seat_number);
@@ -70,7 +67,7 @@ const [activeSeat, setActiveSeat] = useState(null);
           <div>{index}</div>
         ))}
       </div>
-      <div className="w-1/3">
+      <div className="w-1/3 hidden md:block">
         {activeSeat && (
           <FareDetails
             classname={

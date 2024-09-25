@@ -4,7 +4,14 @@ import { setBaggage } from '@/redux/flightSlice';
 import { useState, useEffect } from 'react';
 
 // BaggageCard Component
-const BaggageCard = ({ title, description, weight, price, selected, onSelect }) => {
+const BaggageCard = ({
+  title,
+  description,
+  weight,
+  price,
+  selected,
+  onSelect,
+}) => {
   const dispatch = useDispatch();
   return (
     <div
@@ -57,8 +64,8 @@ const BaggageGrid = () => {
   }, []);
 
   return (
-    <div className="flex">
-      <div className="w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    <div className="md:flex">
+      <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {baggageList?.map((baggage, index) => (
           <BaggageCard
             key={index}
@@ -72,7 +79,7 @@ const BaggageGrid = () => {
         ))}
       </div>
 
-      <div className="w-1/4">
+      <div className="md:w-1/4 hidden md:block">
         <FareDetails
           classname={
             'bg-white ml-10 right-100 inline-block p-4 border rounded w-80'
