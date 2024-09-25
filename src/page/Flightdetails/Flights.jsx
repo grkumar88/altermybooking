@@ -21,7 +21,7 @@ const Flights = ({}) => {
     const fetchSeats = async () => {
       try {
         const response = await fetch(
-          'https://d25ac222-420a-4dd3-9688-bfba567d7a16.mock.pstmn.io/api/ancillary/SeatAvailability'
+          'https://jsonblob.com/api/jsonBlob/1287653781440159744'
         );
         if (!response.ok) {
           throw new Error('Failed to fetch seat');
