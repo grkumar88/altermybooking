@@ -20,7 +20,7 @@ const Meals = () => {
     const fetchMeals = async () => {
       try {
         const response = await fetch(
-          'https://d25ac222-420a-4dd3-9688-bfba567d7a16.mock.pstmn.io/api/ancillary/MealsBaggages'
+          'https://jsonblob.com/api/jsonBlob/1287654071610499072'
         );
         if (!response.ok) {
           throw new Error('Failed to fetch meals');
